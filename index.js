@@ -7,10 +7,18 @@ module.exports = {
     var DeployPlugin = BasePlugin.extend({
       name: options.name,
 
+      defaultConfig: {
+        callback: function(context) {
+          return context.callback || function() {};
+        }
+      },
+
+      requiredConfig: ['callback'],
+
       didDeploy: function(context) {
         this.log("Running generic after deploy callback");
         var callback = this.readConfig('callback') || null;
-        return Promise.resolve(callback());
+        return Promise.resolve(callback);
       }
     });
 
